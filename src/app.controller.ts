@@ -1,15 +1,16 @@
-import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
+import { Controller, Get, Logger } from '@nestjs/common';
 import { AppService } from './app.service';
+import { MessagePattern } from '@nestjs/microservices';
 
 @Controller()
 export class AppController {
   private logger = new Logger('AppController');
   constructor(private readonly appService: AppService) {}
 
-  @Post('add')
-  async accumulation(@Body('data') data: number[]): Promise<number> {
+  @MessagePattern('add')
+  async accumulation(data: number[]) {
     this.logger.log(`Adding ${data.toString()}`);
-    return this.appService.postAcumulete(data);
+    return this.appService.add(data);
   }
 
   @Get()

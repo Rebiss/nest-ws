@@ -10,8 +10,10 @@ import {
 import { Logger } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
 
-@WebSocketGateway()
+@WebSocketGateway(3023)
 export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
+    @WebSocketServer() wss: Server;
+
     private logger: Logger = new Logger('AppGateway');
 
     handleDisconnect(client: Socket) {
@@ -28,6 +30,7 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
 
     @SubscribeMessage('msgToServer')
     handleMessage(client: Socket, text: string): WsResponse<string> {
+        console.log(`>>>>>>>SERVER_MSG: ${text}`);
         return { event: `msgToClient`, data: text };
     }
 }

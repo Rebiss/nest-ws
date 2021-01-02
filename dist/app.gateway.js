@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var _a;
+var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppGateway = void 0;
 const websockets_1 = require("@nestjs/websockets");
@@ -28,17 +28,22 @@ let AppGateway = class AppGateway {
         this.logger.log(`init: ${server}`);
     }
     handleMessage(client, text) {
+        console.log(`>>>>>>>SERVER_MSG: ${text}`);
         return { event: `msgToClient`, data: text };
     }
 };
 __decorate([
+    websockets_1.WebSocketServer(),
+    __metadata("design:type", typeof (_a = typeof socket_io_1.Server !== "undefined" && socket_io_1.Server) === "function" ? _a : Object)
+], AppGateway.prototype, "wss", void 0);
+__decorate([
     websockets_1.SubscribeMessage('msgToServer'),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [typeof (_a = typeof socket_io_1.Socket !== "undefined" && socket_io_1.Socket) === "function" ? _a : Object, String]),
+    __metadata("design:paramtypes", [typeof (_b = typeof socket_io_1.Socket !== "undefined" && socket_io_1.Socket) === "function" ? _b : Object, String]),
     __metadata("design:returntype", Object)
 ], AppGateway.prototype, "handleMessage", null);
 AppGateway = __decorate([
-    websockets_1.WebSocketGateway()
+    websockets_1.WebSocketGateway(3023)
 ], AppGateway);
 exports.AppGateway = AppGateway;
 //# sourceMappingURL=app.gateway.js.map

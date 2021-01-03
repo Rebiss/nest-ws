@@ -1,25 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { Logger } from '@nestjs/common';
-import { Transport } from '@nestjs/microservices';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 
-const logger = new Logger('Main');
-const microserviceOptions = {
-    transport: Transport.TCP,
-    options: {
-        host: 'redis:/localhost:6379',
-    },
-};
-
-const bootstrap = async () => {
-    const app = await NestFactory.createMicroservice(AppModule, microserviceOptions);
-    app.listen(() => {
-        logger.log('Microservice Lissen ,,,,');
-    });
-};
-
-// async function bootstrap() {
-//     const app = await NestFactory.create(AppModule);
-//     await app.listen(3022);
-// }
+async function bootstrap() {
+    const app = await NestFactory.create<NestExpressApplication>(AppModule);
+    app.useStaticAssets(join(__dirname, '..', 'static'));
+    await app.listen(3022);
+}
 bootstrap();
